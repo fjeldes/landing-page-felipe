@@ -1,0 +1,67 @@
+---
+import type { Locale } from '../i18n';
+import { t } from '../i18n';
+
+export interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const text = t(locale);
+const skills = text.skills;
+---
+
+<section class="py-stack-xl px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto" id="skills">
+  <div class="grid grid-cols-1 md:grid-cols-12 gap-stack-lg">
+    <div class="md:col-span-4">
+      <h2 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg mb-stack-sm">{skills.title}</h2>
+      <p class="text-on-surface-variant font-body-md text-body-md">{skills.subtitle}</p>
+      <div class="mt-stack-lg flex flex-wrap gap-stack-sm">
+        {skills.badges.map(badge => (
+          <div class="p-stack-sm glass-card rounded-xl flex items-center gap-base">
+            <span class="material-symbols-outlined text-primary">{badge.icon}</span>
+            <span class="font-label-md text-label-md">{badge.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+    <div class="md:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-gutter">
+      <div class="space-y-stack-sm">
+        <h4 class="font-label-md text-label-md text-primary tracking-widest uppercase">{skills.categories[0].title}</h4>
+        <div class="flex flex-wrap gap-2">
+          {skills.categories[0].items.map(item => {
+            const hl = skills.categories[0].highlight?.includes(item);
+            return <span class:list={['px-4', 'py-2', 'rounded-full', 'font-label-sm', 'text-label-sm', 'border', hl ? 'bg-primary/20 text-primary border-primary/30' : 'bg-surface-variant border-white/5']}>{item}</span>;
+          })}
+        </div>
+      </div>
+      <div class="space-y-stack-sm">
+        <h4 class="font-label-md text-label-md text-secondary tracking-widest uppercase">{skills.categories[1].title}</h4>
+        <div class="flex flex-wrap gap-2">
+          {skills.categories[1].items.map(item => {
+            const hl = skills.categories[1].highlight?.includes(item);
+            return <span class:list={['px-4', 'py-2', 'rounded-full', 'font-label-sm', 'text-label-sm', 'border', hl ? 'bg-secondary/20 text-secondary border-secondary/30' : 'bg-surface-variant border-white/5']}>{item}</span>;
+          })}
+        </div>
+      </div>
+      <div class="space-y-stack-sm">
+        <h4 class="font-label-md text-label-md text-tertiary tracking-widest uppercase">{skills.categories[2].title}</h4>
+        <div class="flex flex-wrap gap-2">
+          {skills.categories[2].items.map(item => {
+            const hl = skills.categories[2].highlight?.includes(item);
+            return <span class:list={['px-4', 'py-2', 'rounded-full', 'font-label-sm', 'text-label-sm', 'border', hl ? 'bg-tertiary/20 text-tertiary border-tertiary/30' : 'bg-surface-variant border-white/5']}>{item}</span>;
+          })}
+        </div>
+      </div>
+      <div class="space-y-stack-sm">
+        <h4 class="font-label-md text-label-md text-outline tracking-widest uppercase">{skills.categories[3].title}</h4>
+        <div class="flex flex-wrap gap-2">
+          {skills.categories[3].items.map(item => {
+            const hl = skills.categories[3].highlight?.includes(item);
+            return <span class:list={['px-4', 'py-2', 'rounded-full', 'font-label-sm', 'text-label-sm', 'border', hl ? 'bg-secondary/20 text-secondary border-secondary/30' : 'bg-surface-variant border-white/5']}>{item}</span>;
+          })}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,47 @@
+---
+import type { Locale } from '../i18n';
+import { t } from '../i18n';
+
+export interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const text = t(locale);
+const hero = text.hero;
+---
+
+<section class="relative pt-stack-xl md:pt-40 pb-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto" id="hero">
+  <div class="absolute top-20 left-10 w-96 h-96 bg-primary bg-glow rounded-full"></div>
+  <div class="absolute top-40 right-10 w-80 h-80 bg-secondary bg-glow rounded-full"></div>
+  <div class="flex flex-col md:flex-row items-center gap-stack-lg">
+    <div class="flex-1 space-y-stack-md order-2 md:order-1">
+      <span class="px-stack-sm py-2 rounded-full border border-primary/30 bg-primary/10 text-primary font-label-md text-label-md inline-block">{hero.badge}</span>
+      <h1 class="font-display-xl-mobile text-display-xl-mobile md:font-display-xl md:text-display-xl tracking-tight">
+        {hero.greeting} <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">{hero.name}</span>
+      </h1>
+      <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+        {hero.description}
+      </p>
+      <div class="flex gap-stack-sm pt-base">
+        <a class="px-stack-lg py-4 bg-gradient-to-r from-primary to-secondary text-on-primary rounded-lg font-label-md text-label-md hover:shadow-[0_0_20px_rgba(208,188,255,0.4)] transition-all active:scale-95" href="#contact">{hero.reachOut}</a>
+        <a class="px-stack-lg py-4 border border-outline/30 rounded-lg font-label-md text-label-md hover:bg-white/5 transition-all" href="#projects">{hero.viewWork}</a>
+      </div>
+    </div>
+    <div class="flex-1 order-1 md:order-2 w-full max-w-[400px] md:max-w-full">
+      <div class="relative glass-card aspect-square rounded-3xl overflow-hidden group">
+        <img src="/felipe.jpg" alt="Felipe Jeldes" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" />
+        <div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent opacity-60"></div>
+        <div class="absolute bottom-6 left-6 right-6 p-4 glass-card rounded-xl">
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="font-label-sm text-label-sm text-primary">{hero.status}</p>
+              <p class="font-label-md text-label-md">{hero.available}</p>
+            </div>
+            <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_#22c55e]"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

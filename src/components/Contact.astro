@@ -1,0 +1,34 @@
+---
+import type { Locale } from '../i18n';
+import { t } from '../i18n';
+
+export interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const text = t(locale);
+const contact = text.contact;
+---
+
+<section class="py-stack-xl relative overflow-hidden" id="contact">
+  <div class="absolute bottom-0 right-0 w-1/2 h-1/2 bg-secondary bg-glow rounded-full"></div>
+  <div class="absolute top-0 left-0 w-1/3 h-1/3 bg-primary bg-glow rounded-full"></div>
+  <div class="px-margin-mobile md:px-margin-desktop max-w-4xl mx-auto text-center relative z-10 glass-card p-stack-xl rounded-[2rem] border-white/10 shadow-2xl">
+    <h2 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg mb-stack-md">{contact.title}</h2>
+    <p class="font-body-lg text-body-lg text-on-surface-variant mb-stack-lg mx-auto max-w-xl">
+      {contact.description}
+    </p>
+    <div class="flex flex-col sm:flex-row justify-center gap-stack-md">
+      <a class="group flex items-center justify-center gap-base px-stack-xl py-5 bg-primary text-on-primary rounded-xl font-label-md text-label-md hover:scale-105 transition-all" href="mailto:fjeldesr@gmail.com">
+        <span class="material-symbols-outlined">send</span>
+        {contact.sendEmail}
+      </a>
+    </div>
+    <div class="mt-stack-lg flex justify-center gap-stack-md text-on-surface-variant">
+      <a class="hover:text-primary transition-colors font-label-md text-label-md" href="https://www.linkedin.com/in/felipe-jeldes-ramirez-580600198" target="_blank" rel="noopener noreferrer">{contact.linkedin}</a>
+      <a class="hover:text-primary transition-colors font-label-md text-label-md" href="https://github.com/fjeldes" target="_blank" rel="noopener noreferrer">{contact.github}</a>
+    </div>
+    <p class="mt-stack-md text-on-surface-variant font-label-md text-label-md">{contact.contactInfo}</p>
+  </div>
+</section>

@@ -1,0 +1,26 @@
+---
+import type { Locale } from '../i18n';
+import { t } from '../i18n';
+
+export interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const text = t(locale);
+---
+
+<footer class="w-full py-stack-md mt-stack-lg border-t border-white/5 bg-surface-container-lowest">
+  <div class="flex flex-col md:flex-row justify-between items-center px-margin-mobile md:px-margin-desktop gap-gutter max-w-container-max mx-auto">
+    <div class="flex items-center gap-base">
+      <span class="material-symbols-outlined text-primary">terminal</span>
+      <span class="font-headline-md text-headline-md text-on-surface">PORTFOLIO</span>
+    </div>
+    <p class="font-body-md text-body-md text-on-surface-variant opacity-60">{text.footer.copyright}</p>
+    <div class="flex gap-stack-md">
+      <a class="text-on-surface-variant hover:text-primary transition-all duration-200 hover:translate-y-[-2px] font-body-md text-body-md" href="https://www.linkedin.com/in/felipe-jeldes-ramirez-580600198" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <a class="text-on-surface-variant hover:text-primary transition-all duration-200 hover:translate-y-[-2px] font-body-md text-body-md" href="https://github.com/fjeldes" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a class="text-on-surface-variant hover:text-primary transition-all duration-200 hover:translate-y-[-2px] font-body-md text-body-md" href="mailto:fjeldesr@gmail.com">Email</a>
+    </div>
+  </div>
+</footer>

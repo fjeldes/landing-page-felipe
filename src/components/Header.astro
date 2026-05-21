@@ -1,0 +1,58 @@
+---
+import type { Locale } from '../i18n';
+import { t } from '../i18n';
+
+export interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const text = t(locale);
+---
+
+<nav class="flex justify-between items-center px-margin-mobile md:px-margin-desktop h-20 max-w-container-max mx-auto">
+  <div class="flex items-center gap-base">
+    <span class="material-symbols-outlined text-primary">terminal</span>
+    <span class="font-display-xl-mobile text-display-xl-mobile tracking-tighter text-on-surface md:font-display-xl md:text-display-xl">PORTFOLIO</span>
+  </div>
+  <div class="hidden md:flex items-center gap-stack-md">
+    <a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-md text-body-md" href="#hero">{text.header.home}</a>
+    <a class="text-on-surface-variant font-medium hover:text-primary transition-colors font-body-md text-body-md" href="#experience">{text.header.experience}</a>
+    <a class="text-on-surface-variant font-medium hover:text-primary transition-colors font-body-md text-body-md" href="#projects">{text.header.projects}</a>
+    <a class="text-on-surface-variant font-medium hover:text-primary transition-colors font-body-md text-body-md" href="#skills">{text.header.skills}</a>
+    <a class="text-on-surface-variant font-medium hover:text-primary transition-colors font-body-md text-body-md" href="#contact">{text.header.contact}</a>
+  </div>
+  <div class="flex items-center gap-stack-sm">
+    <a href={locale === 'en' ? '/es/' : '/'} class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors">
+      {locale === 'en' ? 'ES' : 'EN'}
+    </a>
+    <button id="menu-toggle" class="md:hidden material-symbols-outlined text-on-surface cursor-pointer">menu</button>
+  </div>
+</nav>
+
+<div id="mobile-menu" class="fixed inset-0 z-40 bg-surface/95 backdrop-blur-xl translate-x-full transition-transform duration-300 md:hidden">
+  <div class="flex flex-col items-center justify-center h-full gap-stack-lg">
+    <a class="text-2xl font-bold text-primary font-body-md" href="#hero" data-mobile-close>{text.header.home}</a>
+    <a class="text-2xl font-medium text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#experience" data-mobile-close>{text.header.experience}</a>
+    <a class="text-2xl font-medium text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#projects" data-mobile-close>{text.header.projects}</a>
+    <a class="text-2xl font-medium text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#skills" data-mobile-close>{text.header.skills}</a>
+    <a class="text-2xl font-medium text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#contact" data-mobile-close>{text.header.contact}</a>
+  </div>
+</div>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+  if (toggle && menu) {
+    toggle.addEventListener('click', () => {
+      menu.classList.toggle('translate-x-full');
+      menu.classList.toggle('translate-x-0');
+    });
+    document.querySelectorAll('[data-mobile-close]').forEach(link => {
+      link.addEventListener('click', () => {
+        menu.classList.add('translate-x-full');
+        menu.classList.remove('translate-x-0');
+      });
+    });
+  }
+</script>
