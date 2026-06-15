@@ -107,7 +107,7 @@ const previewSlots = [0, 1];
 
     let current = 0;
     let timer: number | null = null;
-    const INTERVAL = 5000;
+    const INTERVAL = 8000;
 
     function setState(el: HTMLElement, active: boolean, z: number) {
       el.style.opacity = active ? '1' : '0';
@@ -168,14 +168,6 @@ const previewSlots = [0, 1];
       dot.addEventListener('click', () => {
         goTo(parseInt(dot.dataset.dot || '0'));
       });
-    });
-
-    section.addEventListener('mouseenter', () => {
-      if (timer) { clearInterval(timer); timer = null; }
-    });
-
-    section.addEventListener('mouseleave', () => {
-      timer = window.setInterval(next, INTERVAL);
     });
 
     timer = window.setInterval(next, INTERVAL);
