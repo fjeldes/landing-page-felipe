@@ -9,9 +9,15 @@ export interface Props {
 const { locale } = Astro.props;
 const text = t(locale);
 const projects = text.projects;
+const total = projects.items.length;
+const previewSlots = [0, 1];
 ---
 
-<section class="py-stack-xl bg-surface-container-lowest/50" id="projects">
+<section
+  class="py-stack-xl bg-surface-container-lowest/50"
+  id="projects"
+  data-carousel-total={String(total)}
+>
   <div class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
     <div class="flex flex-col md:flex-row justify-between items-end mb-stack-lg gap-stack-sm">
       <div>
@@ -19,40 +25,159 @@ const projects = text.projects;
         <p class="text-on-surface-variant font-body-md text-body-md">{projects.subtitle}</p>
       </div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
-      <div class="md:col-span-8 group relative glass-card rounded-3xl overflow-hidden border-white/5 hover:border-primary/50 transition-all duration-500">
-        <div class="aspect-video overflow-hidden bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center">
-          <span class="material-symbols-outlined text-[80px] text-primary/30">{projects.items[0].icon}</span>
-        </div>
-        <div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-transparent opacity-90 p-stack-md flex flex-col justify-end">
-          <div class="flex gap-2 mb-stack-sm">
-            {projects.items[0].tags.map(tag => (
-              <span class="px-3 py-1 bg-primary/20 text-primary border border-primary/30 rounded-full text-[10px] font-bold">{tag}</span>
-            ))}
-          </div>
-          <h3 class="font-headline-md text-headline-md mb-2">{projects.items[0].title}</h3>
-          <p class="text-on-surface-variant font-body-md text-body-md max-w-lg mb-stack-sm">{projects.items[0].description}</p>
-          <div class="flex gap-stack-sm">
-            <span class="material-symbols-outlined p-2 bg-white/5 rounded-full hover:bg-white/10 transition-colors">link</span>
-            <span class="material-symbols-outlined p-2 bg-white/5 rounded-full hover:bg-white/10 transition-colors">code</span>
-          </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter" id="carousel">
+      <div class="md:col-span-8">
+        <div class="relative aspect-video">
+          {projects.items.map((item, i) => (
+            <div
+              data-card={i}
+              class={`absolute inset-0 glass-card rounded-3xl overflow-hidden border-white/5 hover:border-primary/50 transition-all duration-500 ${i === 0 ? 'opacity-100 z-10 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none'}`}
+            >
+              {item.image ? (
+                <img src={item.image} alt={item.title} class="h-full w-full object-cover" />
+              ) : (
+                <div class="h-full overflow-hidden bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center">
+                  <span class="material-symbols-outlined text-[80px] text-primary/30">{item.icon}</span>
+                </div>
+              )}
+              <div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-transparent opacity-90 p-stack-md flex flex-col justify-end">
+                <div class="flex gap-2 mb-stack-sm">
+                  {item.tags.map(tag => (
+                    <span class="px-3 py-1 bg-primary/20 text-primary border border-primary/30 rounded-full text-[10px] font-bold">{tag}</span>
+                  ))}
+                </div>
+                <h3 class="font-headline-md text-headline-md mb-2">{item.title}</h3>
+                <p class="text-on-surface-variant font-body-md text-body-md max-w-lg mb-stack-sm">{item.description}</p>
+                <div class="flex gap-stack-sm">
+                  <span class="material-symbols-outlined p-2 bg-white/5 rounded-full hover:bg-white/10 transition-colors">link</span>
+                  <span class="material-symbols-outlined p-2 bg-white/5 rounded-full hover:bg-white/10 transition-colors">code</span>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
+
       <div class="md:col-span-4 flex flex-col gap-gutter">
-        {projects.items.slice(1).map(item => (
-          <div class="flex-1 group relative glass-card rounded-3xl overflow-hidden border-white/5 hover:border-secondary/50 transition-all duration-500">
-            <div class="h-full min-h-[200px] overflow-hidden bg-gradient-to-br from-secondary/10 to-tertiary/10 flex items-center justify-center">
-              <span class="material-symbols-outlined text-[60px] text-secondary/30">{item.icon}</span>
-            </div>
-            <div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-transparent opacity-90 p-stack-md flex flex-col justify-end">
-              <span class="px-3 py-1 w-fit bg-tertiary/20 text-tertiary border border-tertiary/30 rounded-full text-[10px] font-bold mb-stack-sm">{item.tags[0]}</span>
-              <h3 class="font-headline-md text-headline-md mb-2">{item.title}</h3>
-              <p class="text-on-surface-variant font-body-md text-body-md mb-stack-sm">{item.description}</p>
-              <span class="material-symbols-outlined p-2 w-fit bg-white/5 rounded-full hover:bg-white/10 transition-colors">arrow_outward</span>
-            </div>
+        {previewSlots.map(slot => (
+          <div data-preview-slot={`${slot}`} class="flex-1 relative min-h-[140px]">
+            {projects.items.map((item, i) => {
+              const previewIndex = (slot + 1) % total;
+              const isVisible = i === previewIndex;
+              return (
+                <div
+                  data-preview={i}
+                  data-slot={`${slot}`}
+                  class={`absolute inset-0 glass-card rounded-3xl overflow-hidden border-white/5 hover:border-secondary/50 transition-all duration-500 cursor-pointer ${isVisible ? 'opacity-100 z-10 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none'}`}
+                >
+                  <div class="h-full min-h-[140px] bg-gradient-to-br from-secondary/10 to-tertiary/10 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[48px] text-secondary/30">{item.icon}</span>
+                  </div>
+                  <div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-transparent opacity-90 p-stack-md flex flex-col justify-end">
+                    <span class="px-3 py-1 w-fit bg-tertiary/20 text-tertiary border border-tertiary/30 rounded-full text-[10px] font-bold mb-stack-sm">{item.tags[0]}</span>
+                    <h3 class="font-headline-sm text-headline-sm font-medium">{item.title}</h3>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         ))}
       </div>
     </div>
+
+    <div class="flex justify-center gap-2 mt-6" id="carousel-dots">
+      {projects.items.map((_, i) => (
+        <button
+          data-dot={i}
+          class={`rounded-full transition-all duration-300 ${i === 0 ? 'bg-primary w-6 h-2.5' : 'bg-white/20 hover:bg-white/40 w-2.5 h-2.5'}`}
+          aria-label={`Project ${i + 1}`}
+        ></button>
+      ))}
+    </div>
   </div>
 </section>
+
+<script>
+  (function () {
+    const section = document.getElementById('projects');
+    if (!section) return;
+    const total = parseInt(section.dataset.carouselTotal || '0');
+    if (total < 2) return;
+
+    let current = 0;
+    let timer: number | null = null;
+    const INTERVAL = 5000;
+
+    function setState(el: HTMLElement, active: boolean, z: number) {
+      el.style.opacity = active ? '1' : '0';
+      el.style.zIndex = String(z);
+      el.style.pointerEvents = active ? 'auto' : 'none';
+    }
+
+    function updatePreviews(idx: number) {
+      for (let slot = 0; slot < 2; slot++) {
+        const previewIdx = (idx + 1 + slot) % total;
+        const slotEl = section!.querySelector(`[data-preview-slot="${slot}"]`) as HTMLElement | null;
+        if (!slotEl) continue;
+        slotEl.querySelectorAll<HTMLElement>('[data-preview]').forEach((item) => {
+          const i = parseInt(item.dataset.preview || '0');
+          setState(item, i === previewIdx, 10);
+        });
+      }
+    }
+
+    function updateDots(idx: number) {
+      section!.querySelectorAll<HTMLElement>('[data-dot]').forEach((dot) => {
+        const i = parseInt(dot.dataset.dot || '0');
+        dot.className =
+          i === idx
+            ? 'rounded-full transition-all duration-300 bg-primary w-6 h-2.5'
+            : 'rounded-full transition-all duration-300 bg-white/20 hover:bg-white/40 w-2.5 h-2.5';
+      });
+    }
+
+    function show(idx: number) {
+      if (idx === current) return;
+      const cards = section!.querySelectorAll<HTMLElement>('[data-card]');
+      setState(cards[current], false, 0);
+      setState(cards[idx], true, 10);
+      updatePreviews(idx);
+      updateDots(idx);
+      current = idx;
+    }
+
+    function next() {
+      show((current + 1) % total);
+    }
+
+    function goTo(idx: number) {
+      if (idx === current) return;
+      if (timer) clearInterval(timer);
+      show(idx);
+      timer = window.setInterval(next, INTERVAL);
+    }
+
+    section.querySelectorAll<HTMLElement>('[data-preview]').forEach((el) => {
+      el.addEventListener('click', () => {
+        goTo(parseInt(el.dataset.preview || '0'));
+      });
+    });
+
+    section.querySelectorAll<HTMLElement>('[data-dot]').forEach((dot) => {
+      dot.addEventListener('click', () => {
+        goTo(parseInt(dot.dataset.dot || '0'));
+      });
+    });
+
+    section.addEventListener('mouseenter', () => {
+      if (timer) { clearInterval(timer); timer = null; }
+    });
+
+    section.addEventListener('mouseleave', () => {
+      timer = window.setInterval(next, INTERVAL);
+    });
+
+    timer = window.setInterval(next, INTERVAL);
+  })();
+</script>
