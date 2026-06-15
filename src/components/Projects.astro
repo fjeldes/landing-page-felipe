@@ -155,7 +155,15 @@ const previewSlots = [0, 1];
       if (idx === current) return;
       if (timer) clearInterval(timer);
       show(idx);
+    section.addEventListener('mouseenter', () => {
+      if (timer) { clearInterval(timer); timer = null; }
+    });
+
+    section.addEventListener('mouseleave', () => {
       timer = window.setInterval(next, INTERVAL);
+    });
+
+    timer = window.setInterval(next, INTERVAL);
     }
 
     section.querySelectorAll<HTMLElement>('[data-preview]').forEach((el) => {
